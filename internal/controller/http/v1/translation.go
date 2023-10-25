@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"github.com/madyar997/maquette/config"
+	"github.com/madyar997/maquette/internal/controller/http/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,16 +13,17 @@ import (
 )
 
 type translationRoutes struct {
-	t usecase.Translation
-	l logger.Interface
+	t   usecase.Translation
+	l   logger.Interface
+	cfg *config.Config
 }
 
-func newTranslationRoutes(handler *gin.RouterGroup, t usecase.Translation, l logger.Interface) {
-	r := &translationRoutes{t, l}
+func newTranslationRoutes(handler *gin.RouterGroup, t usecase.Translation, l logger.Interface, cfg *config.Config) {
+	r := &translationRoutes{t, l, cfg}
 
 	h := handler.Group("/translation")
 	{
-		h.GET("/history", r.history)
+		h.GET("/history", middleware.JwtVerify(cfg), r.history)
 		h.POST("/do-translate", r.doTranslate)
 	}
 }

@@ -11,3 +11,6 @@ logger:
 
 postgres:
   pool_max: 2
+
+jwt:
+  secret_key: 'auth_secret'
