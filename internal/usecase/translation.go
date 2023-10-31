@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/madyar997/maquette/internal/entity"
+	"github.com/madyar997/qr-generator/internal/entity"
 )
 
 // TranslationUseCase -.

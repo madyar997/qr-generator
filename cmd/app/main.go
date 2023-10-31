@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/madyar997/maquette/config"
-	"github.com/madyar997/maquette/internal/app"
+	"github.com/madyar997/qr-generator/config"
+	"github.com/madyar997/qr-generator/internal/app"
 )
 
 func main() {

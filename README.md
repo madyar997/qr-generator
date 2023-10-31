@@ -5,9 +5,9 @@
 
 Clean Architecture template for Golang services
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/madyar997/maquette)](https://goreportcard.com/report/github.com/madyar997/maquette)
-[![License](https://img.shields.io/github/license/evrone/go-clean-template.svg)](https://github.com/madyar997/maquette/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/v/release/evrone/go-clean-template.svg)](https://github.com/madyar997/maquette/releases/)
+[![Go Report Card](https://goreportcard.com/badge/github.com/madyar997/qr-generator)](https://goreportcard.com/report/github.com/madyar997/qr-generator)
+[![License](https://img.shields.io/github/license/evrone/go-clean-template.svg)](https://github.com/madyar997/qr-generator/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/evrone/go-clean-template.svg)](https://github.com/madyar997/qr-generator/releases/)
 [![codecov](https://codecov.io/gh/evrone/go-clean-template/branch/master/graph/badge.svg?token=XE3E0X3EVQ)](https://codecov.io/gh/evrone/go-clean-template)
 
 ## Overview

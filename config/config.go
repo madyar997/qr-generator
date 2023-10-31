@@ -13,7 +13,7 @@ type (
 		HTTP `yaml:"http"`
 		Log  `yaml:"logger"`
 		PG   `yaml:"postgres"`
-		Jwt  `yaml: jwt`
+		Jwt  `yaml:"jwt"`
 	}
 
 	// App -.

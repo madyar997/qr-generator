@@ -2,7 +2,7 @@
 package v1
 
 import (
-	"github.com/madyar997/maquette/config"
+	"github.com/madyar997/qr-generator/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,9 +11,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// Swagger docs.
-	_ "github.com/madyar997/maquette/docs"
-	"github.com/madyar997/maquette/internal/usecase"
-	"github.com/madyar997/maquette/pkg/logger"
+	_ "github.com/madyar997/qr-generator/docs"
+	"github.com/madyar997/qr-generator/internal/usecase"
+	"github.com/madyar997/qr-generator/pkg/logger"
 )
 
 // NewRouter -.
@@ -23,7 +23,7 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, cfg *config.Config) {
+func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, q usecase.Qr, cfg *config.Config) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
@@ -42,5 +42,6 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, c
 	h := handler.Group("/v1")
 	{
 		newTranslationRoutes(h, t, l, cfg)
+		newQrRoutes(h, q, l, cfg)
 	}
 }

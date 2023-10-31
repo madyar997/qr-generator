@@ -5,7 +5,7 @@ import (
 
 	translator "github.com/Conight/go-googletrans"
 
-	"github.com/madyar997/maquette/internal/entity"
+	"github.com/madyar997/qr-generator/internal/entity"
 )
 
 // TranslationWebAPI -.

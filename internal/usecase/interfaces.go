@@ -3,8 +3,7 @@ package usecase
 
 import (
 	"context"
-
-	"github.com/madyar997/maquette/internal/entity"
+	"github.com/madyar997/qr-generator/internal/entity"
 )
 
 //go:generate mockgen -source=interfaces.go -destination=./mocks_test.go -package=usecase_test
@@ -25,5 +24,9 @@ type (
 	// TranslationWebAPI -.
 	TranslationWebAPI interface {
 		Translate(entity.Translation) (entity.Translation, error)
+	}
+
+	Qr interface {
+		Me(ctx context.Context, userID int) (*entity.UserInfo, error)
 	}
 )

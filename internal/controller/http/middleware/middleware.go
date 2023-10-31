@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/madyar997/maquette/config"
+	"github.com/madyar997/qr-generator/config"
 	"log"
 	"net/http"
 	"strings"

@@ -1,15 +1,15 @@
 package v1
 
 import (
-	"github.com/madyar997/maquette/config"
-	"github.com/madyar997/maquette/internal/controller/http/middleware"
+	"github.com/madyar997/qr-generator/config"
+	"github.com/madyar997/qr-generator/internal/controller/http/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/madyar997/maquette/internal/entity"
-	"github.com/madyar997/maquette/internal/usecase"
-	"github.com/madyar997/maquette/pkg/logger"
+	"github.com/madyar997/qr-generator/internal/entity"
+	"github.com/madyar997/qr-generator/internal/usecase"
+	"github.com/madyar997/qr-generator/pkg/logger"
 )
 
 type translationRoutes struct {

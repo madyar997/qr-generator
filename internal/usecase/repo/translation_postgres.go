@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/madyar997/maquette/internal/entity"
-	"github.com/madyar997/maquette/pkg/postgres"
+	"github.com/madyar997/qr-generator/internal/entity"
+	"github.com/madyar997/qr-generator/pkg/postgres"
 )
 
 const _defaultEntityCap = 64
