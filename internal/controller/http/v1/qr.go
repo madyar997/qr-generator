@@ -45,5 +45,5 @@ func (r *qrRoutes) me(ctx *gin.Context) {
 
 		return
 	}
-	ctx.JSON(http.StatusOK, res)
+	ctx.Data(http.StatusOK, "image/png", res)
 }

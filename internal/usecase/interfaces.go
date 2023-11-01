@@ -27,6 +27,6 @@ type (
 	}
 
 	Qr interface {
-		Me(ctx context.Context, userID int) (*entity.UserInfo, error)
+		Me(ctx context.Context, userID int) ([]byte, error)
 	}
 )

@@ -8,6 +8,7 @@ import (
 	"github.com/madyar997/qr-generator/pkg/jaeger"
 	"github.com/opentracing/opentracing-go"
 	spanLog "github.com/opentracing/opentracing-go/log"
+	qrcode "github.com/skip2/go-qrcode"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,7 +27,7 @@ func NewQrUseCase(httpCli *http.Client) *QrUseCase {
 	}
 }
 
-func (uq *QrUseCase) Me(ctx context.Context, userID int) (*entity.UserInfo, error) {
+func (uq *QrUseCase) Me(ctx context.Context, userID int) ([]byte, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "qr generator use case")
 	defer span.Finish()
 
@@ -66,5 +67,11 @@ func (uq *QrUseCase) Me(ctx context.Context, userID int) (*entity.UserInfo, erro
 		return nil, err
 	}
 
-	return user, nil
+	var png []byte
+	png, err = qrcode.Encode(fmt.Sprintf("https://example.com/%d", userID), qrcode.Medium, 256)
+	if err != nil {
+		log.Printf("could not create qr code %s", err)
+		return nil, err
+	}
+	return png, nil
 }
