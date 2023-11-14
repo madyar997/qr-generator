@@ -14,3 +14,6 @@ postgres:
 
 jwt:
   secret_key: 'auth_secret'
+  
+grpc:
+  port: ":4000"

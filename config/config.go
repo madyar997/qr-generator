@@ -14,6 +14,7 @@ type (
 		Log  `yaml:"logger"`
 		PG   `yaml:"postgres"`
 		Jwt  `yaml:"jwt"`
+		Grpc `yaml:"grpc"`
 	}
 
 	// App -.
@@ -25,6 +26,10 @@ type (
 	// HTTP -.
 	HTTP struct {
 		Port string `env-required:"true" yaml:"port" env:"HTTP_PORT"`
+	}
+
+	Grpc struct {
+		Port string `env-required:"true" yaml:"port" env:"GRPC_PORT"`
 	}
 
 	// Log -.

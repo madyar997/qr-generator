@@ -2,14 +2,11 @@ package usecase
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"github.com/madyar997/qr-generator/internal/entity"
-	"github.com/madyar997/qr-generator/pkg/jaeger"
+	ssoClient "github.com/madyar997/user-client/client/grpc"
 	"github.com/opentracing/opentracing-go"
 	spanLog "github.com/opentracing/opentracing-go/log"
 	qrcode "github.com/skip2/go-qrcode"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -18,12 +15,14 @@ import (
 // QrUseCase -.
 type QrUseCase struct {
 	httpCli *http.Client
+	ssoCli  *ssoClient.Client
 }
 
 // New -.
-func NewQrUseCase(httpCli *http.Client) *QrUseCase {
+func NewQrUseCase(httpCli *http.Client, client *ssoClient.Client) *QrUseCase {
 	return &QrUseCase{
 		httpCli: httpCli,
+		ssoCli:  client,
 	}
 }
 
@@ -35,40 +34,14 @@ func (uq *QrUseCase) Me(ctx context.Context, userID int) ([]byte, error) {
 		spanLog.String("user_id", strconv.Itoa(userID)),
 	)
 
-	url := fmt.Sprintf("http://localhost:8080/api/v1/admin/user/%d", userID)
-	req, err := http.NewRequest("GET", url, nil)
+	user, err := uq.ssoCli.GetUserByID(ctx, int32(userID))
 	if err != nil {
-		log.Printf("error %s", err)
-		return nil, err
-	}
-
-	err = jaeger.Inject(span, req)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Accept", `application/json`)
-	resp, err := uq.httpCli.Do(req)
-	if err != nil {
-		log.Printf("error %s", err)
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	var user *entity.UserInfo
-	data, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Printf("error %s", err)
-		return nil, err
-	}
-
-	if err = json.Unmarshal(data, &user); err != nil {
-		log.Printf("error %s", err)
+		log.Printf("could not get user from sso %s", err)
 		return nil, err
 	}
 
 	var png []byte
-	png, err = qrcode.Encode(fmt.Sprintf("https://example.com/%d", userID), qrcode.Medium, 256)
+	png, err = qrcode.Encode(fmt.Sprintf("https://example.com/%s", user.Email), qrcode.Medium, 256)
 	if err != nil {
 		log.Printf("could not create qr code %s", err)
 		return nil, err

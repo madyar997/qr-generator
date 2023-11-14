@@ -15,6 +15,7 @@ import (
 	"github.com/madyar997/qr-generator/pkg/jaeger"
 	"github.com/madyar997/qr-generator/pkg/logger"
 	"github.com/madyar997/qr-generator/pkg/postgres"
+	ssoClient "github.com/madyar997/user-client/client/grpc"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -38,13 +39,18 @@ func Run(cfg *config.Config) {
 	}
 	defer pg.Close()
 
+	ssoCli, err := ssoClient.NewClient(ssoClient.WithAddress(cfg.Grpc.Port), ssoClient.WithInsecure())
+	if err != nil {
+		l.Fatal(fmt.Errorf("app - Run - ssoClient : %w", err))
+	}
+
 	// Use case
 	translationUseCase := usecase.New(
 		repo.New(pg),
 		webapi.New(),
 	)
 
-	qrUseCase := usecase.NewQrUseCase(http.DefaultClient)
+	qrUseCase := usecase.NewQrUseCase(http.DefaultClient, ssoCli)
 
 	// HTTP Server
 	handler := gin.New()
