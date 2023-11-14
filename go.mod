@@ -3,7 +3,7 @@ module github.com/madyar997/qr-generator
 go 1.17
 
 require (
-	github.com/Conight/go-googletrans v0.0.0-20200929083318-176776d061cb
+	github.com/Conight/go-googletrans v0.2.4
 	github.com/Masterminds/squirrel v1.5.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt v3.2.2+incompatible
