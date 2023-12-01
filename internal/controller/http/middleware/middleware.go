@@ -5,9 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"github.com/madyar997/qr-generator/config"
+	"github.com/madyar997/qr-generator/internal/metrics"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func JwtVerify(cfg *config.Config) gin.HandlerFunc {
@@ -52,5 +55,22 @@ func JwtVerify(cfg *config.Config) gin.HandlerFunc {
 		ctx.Set("user_id", userID)
 
 		ctx.Next()
+	}
+}
+
+func HTTPMetrics() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		now := time.Now()
+
+		ctx.Next()
+
+		elapsedSeconds := time.Since(now).Seconds()
+		pattern := ctx.FullPath()
+		method := ctx.Request.Method
+		status := ctx.Writer.Status()
+
+		metrics.HttpRequestsDurationHistorgram.WithLabelValues(pattern, method).Observe(elapsedSeconds)
+		metrics.HttpRequestsDurationSummary.WithLabelValues(pattern, method).Observe(elapsedSeconds)
+		metrics.HttpRequestsTotal.WithLabelValues(pattern, method, strconv.Itoa(status)).Inc()
 	}
 }

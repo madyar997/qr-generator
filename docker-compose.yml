@@ -13,34 +13,24 @@ services:
     ports:
       - 5432:5432
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:3.8.12-management
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    volumes:
+      - ./pkg/prometheus:/etc/prometheus
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 9090:9090
 
-  app:
-    build: .
-    container_name: app
-    image: app
-    environment:
-      PG_URL: 'postgres://user:pass@postgres:5432/postgres'
-      RMQ_URL: 'amqp://guest:guest@rabbitmq:5672/'
+  grafana:
+    image: grafana/grafana
+    restart: always
     ports:
-      - 8080:8080
+      - 3000:3000
     depends_on:
-      - postgres
-      - rabbitmq
-
-  integration:
-    build:
-      context: .
-      dockerfile: integration-test/Dockerfile
-    container_name: integration
-    image: integration
-    depends_on:
-      - app
+      - prometheus
 
 volumes:
   pg-data:
+  prom_data: 

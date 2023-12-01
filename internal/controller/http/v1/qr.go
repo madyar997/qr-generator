@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/madyar997/qr-generator/config"
 	"github.com/madyar997/qr-generator/internal/controller/http/middleware"
+	"github.com/madyar997/qr-generator/internal/metrics"
 	"github.com/madyar997/qr-generator/internal/usecase"
 	"github.com/madyar997/qr-generator/pkg/logger"
 	"github.com/opentracing/opentracing-go"
@@ -29,6 +30,8 @@ func (r *qrRoutes) me(ctx *gin.Context) {
 	span := opentracing.StartSpan("qr-generator-service /me handler method")
 	defer span.Finish()
 
+	metrics.QrMe.Add(1)
+
 	userID, ok := ctx.Get("user_id")
 	if !ok {
 		errorResponse(ctx, http.StatusInternalServerError, "can not parse user id ")
@@ -45,5 +48,6 @@ func (r *qrRoutes) me(ctx *gin.Context) {
 
 		return
 	}
+
 	ctx.Data(http.StatusOK, "image/png", res)
 }

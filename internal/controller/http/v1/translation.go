@@ -23,7 +23,8 @@ func newTranslationRoutes(handler *gin.RouterGroup, t usecase.Translation, l log
 
 	h := handler.Group("/translation")
 	{
-		h.GET("/history", middleware.JwtVerify(cfg), r.history)
+		h.Use(middleware.JwtVerify(cfg))
+		h.GET("/history", r.history)
 		h.POST("/do-translate", r.doTranslate)
 	}
 }

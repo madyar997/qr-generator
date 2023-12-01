@@ -3,6 +3,7 @@ package v1
 
 import (
 	"github.com/madyar997/qr-generator/config"
+	"github.com/madyar997/qr-generator/internal/controller/http/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,6 +28,7 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, q
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
+	handler.Use(middleware.HTTPMetrics())
 
 	// Swagger
 	swaggerHandler := ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, "DISABLE_SWAGGER_HTTP_HANDLER")
@@ -44,4 +46,14 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Translation, q
 		newTranslationRoutes(h, t, l, cfg)
 		newQrRoutes(h, q, l, cfg)
 	}
+
+	handler.GET("/code-200", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
+	handler.GET("/code-400", func(c *gin.Context) {
+		c.Status(http.StatusBadRequest)
+	})
+	handler.GET("/code-500", func(c *gin.Context) {
+		c.Status(http.StatusInternalServerError)
+	})
 }
